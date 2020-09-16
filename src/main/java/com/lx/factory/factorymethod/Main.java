@@ -1,5 +1,8 @@
 package com.lx.factory.factorymethod;
 
+/**
+ * 形容词用接口,名词用抽象类
+ */
 public class Main {
     public static void main(String[] args) {
 //        Move c = new Car();
