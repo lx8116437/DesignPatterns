@@ -1,4 +1,4 @@
-package com.lx.factorymethod;
+package com.lx.factory.factorymethod;
 
 /**
  * 简单工厂模式

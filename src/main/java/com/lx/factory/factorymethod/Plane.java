@@ -1,4 +1,4 @@
-package com.lx.factorymethod;
+package com.lx.factory.factorymethod;
 
 public class Plane implements Move{
     public void go(){

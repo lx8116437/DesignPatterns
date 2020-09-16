@@ -1,4 +1,4 @@
-package com.lx.factorymethod;
+package com.lx.factory.factorymethod;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,8 +9,8 @@ public class Main {
 //        m.go();
 
         // 简单工厂生产汽车
-        SimpleVehicleFactory s = new SimpleVehicleFactory();
-        Car c1 = s.createCar();
+        SimpleVehicleFactory s = new com.lx.factory.factorymethod.SimpleVehicleFactory();
+        com.lx.factory.factorymethod.Car c1 = s.createCar();
         c1.go();
     }
 }
