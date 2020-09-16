@@ -13,6 +13,14 @@ public class Main {
         // 需要什么工厂在这里创建什么工厂就行
         Factory factory = new FantasyFactory();
         // 这里的方法不需要改
+//        Arms a = factory.creatArms();
+//        a.attack();
+//        Food food = factory.createFood();
+//        food.eat();
+//        TravelTool travelTool = factory.createTravelTool();
+//        travelTool.go();
+
+        // 也可以写成这样
         factory.creatArms().attack();
         factory.createFood().eat();
         factory.createTravelTool().go();
