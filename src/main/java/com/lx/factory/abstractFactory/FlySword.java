@@ -1,6 +1,9 @@
 package com.lx.factory.abstractFactory;
 
-public class Sword extends Arms{
+/**
+ * 飞剑
+ */
+public class FlySword extends Arms{
     public void attack(){
         System.out.println("Ceng Ceng Ceng........");
     }

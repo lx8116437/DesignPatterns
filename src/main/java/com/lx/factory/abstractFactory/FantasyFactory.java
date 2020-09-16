@@ -1,5 +1,8 @@
 package com.lx.factory.abstractFactory;
 
+/**
+ * 玄幻世界工厂
+ */
 public class FantasyFactory extends Factory{
     @Override
     Food createFood() {
@@ -8,7 +11,7 @@ public class FantasyFactory extends Factory{
 
     @Override
     Arms creatArms() {
-        return new Sword();
+        return new FlySword();
     }
 
     @Override
