@@ -21,7 +21,9 @@ public class Tank implements Movable {
 
     public static void main(String[] args) {
         Tank tank = new Tank();
-        System.getProperties().put("jdk.proxy.ProxyGenerator.saveGeneratedFiles", "true");
+//        System.getProperties().put("jdk.proxy.ProxyGenerator.saveGeneratedFiles", "true");
+        // 低版本使用下面这个类,高版本使用上面的
+        System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
         Movable movable = (Movable) Proxy.newProxyInstance(Tank.class.getClassLoader(), new Class[]{Movable.class}, new TimeProxy(tank));
         movable.move();
     }
