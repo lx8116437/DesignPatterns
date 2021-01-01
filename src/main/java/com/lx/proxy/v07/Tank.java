@@ -3,7 +3,15 @@ package com.lx.proxy.v07;
 import java.util.Random;
 
 /**
- * 静态代理,多类实现相同接口,互为代理
+ * 问题：我想记录坦克的移动时间
+ * 最简单的办法：修改代码，记录时间
+ * 问题2：如果无法改变方法源码呢？
+ * 用继承？
+ * v05:使用代理
+ * v06:代理有各种类型
+ * 问题：如何实现代理的各种组合？继承？Decorator?
+ * v07:代理的对象改成Movable类型-越来越像decorator了
+ *
  */
 public class Tank implements Movable {
     @Override
@@ -24,34 +32,33 @@ public class Tank implements Movable {
 
 }
 
-class TankTimeProxy implements Movable {
-    Movable movable;
+class TankTimeProxy implements Movable{
+    Movable m;
 
-    public TankTimeProxy(Movable movable) {
-        this.movable = movable;
+    public TankTimeProxy(Movable m) {
+        this.m = m;
     }
 
     @Override
     public void move() {
         long start = System.currentTimeMillis();
-        movable.move();
+        m.move();
         long end = System.currentTimeMillis();
         System.out.println(end - start);
     }
 }
+class TankLogProxy implements Movable{
+    Movable m;
 
-class TankLogProxy implements Movable {
-    Movable movable;
-
-    public TankLogProxy(Movable movable) {
-        this.movable = movable;
+    public TankLogProxy(Movable m) {
+        this.m = m;
     }
 
     @Override
     public void move() {
-        System.out.println("开始移动。。。");
-        movable.move();
-        System.out.println("移动结束!");
+        System.out.println("开始日志....");
+        m.move();
+        System.out.println("结束日志");
     }
 }
 

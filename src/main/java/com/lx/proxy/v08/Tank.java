@@ -1,4 +1,4 @@
-package com.lx.proxy.v10;
+package com.lx.proxy.v08;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -15,14 +15,10 @@ import java.util.Random;
  * 问题：如何实现代理的各种组合？继承？Decorator?
  * v07:代理的对象改成Movable类型-越来越像decorator了
  * v08:如果有stop方法需要代理...
- * 如果想让LogProxy可以重用，不仅可以代理Tank，还可以代理任何其他可以代理的类型
+ * 如果想让LogProxy可以重用，不仅可以代理Tank，还可以代理任何其他可以代理的类型 Object
  * （毕竟日志记录，时间计算是很多方法都需要的东西），这时该怎么做呢？
  * 分离代理行为与被代理对象
  * 使用jdk的动态代理
- *
- * v09: 横切代码与业务逻辑代码分离 AOP
- * v10: 通过反射观察生成的代理对象
- * jdk反射生成代理必须面向接口，这是由Proxy的内部实现决定的
  */
 public class Tank implements Movable {
     @Override
@@ -33,39 +29,30 @@ public class Tank implements Movable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
     }
 
     public static void main(String[] args) {
-        Tank tank = new Tank();
-//        System.getProperties().put("jdk.proxy.ProxyGenerator.saveGeneratedFiles", "true");
-        // 低版本使用下面这个类,高版本使用上面的
-        System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
-        Movable movable = (Movable) Proxy.newProxyInstance(Tank.class.getClassLoader(), new Class[]{Movable.class}, new TimeProxy(tank));
-        movable.move();
+        Tank t = new Tank();
+        Movable m = (Movable) Proxy.newProxyInstance(Tank.class.getClassLoader(), new Class[]{Movable.class}, new LogHandler(t));
+        m.move();
     }
 
 }
 
-class TimeProxy implements InvocationHandler{
-    Movable m;
+class LogHandler implements InvocationHandler {
+    Tank t;
 
-    public TimeProxy(Movable m) {
-        this.m = m;
-    }
-
-    public void before(){
-        System.out.println("开始...");
-    }
-
-    public void after(){
-        System.out.println("结束...");
+    public LogHandler(Tank t) {
+        this.t = t;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        before();
-        Object o = method.invoke(m, args);
-        after();
+        System.out.println("method: " + method.getName() + "start....");
+        Object o = method.invoke(t, args);
+        System.out.println("method: " + method.getName() + "end....");
         return o;
     }
 }

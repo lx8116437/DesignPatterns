@@ -1,4 +1,4 @@
-package com.lx.proxy.v10;
+package com.lx.proxy.v09;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -21,8 +21,6 @@ import java.util.Random;
  * 使用jdk的动态代理
  *
  * v09: 横切代码与业务逻辑代码分离 AOP
- * v10: 通过反射观察生成的代理对象
- * jdk反射生成代理必须面向接口，这是由Proxy的内部实现决定的
  */
 public class Tank implements Movable {
     @Override
@@ -33,38 +31,37 @@ public class Tank implements Movable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
     }
 
     public static void main(String[] args) {
-        Tank tank = new Tank();
-//        System.getProperties().put("jdk.proxy.ProxyGenerator.saveGeneratedFiles", "true");
-        // 低版本使用下面这个类,高版本使用上面的
-        System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
-        Movable movable = (Movable) Proxy.newProxyInstance(Tank.class.getClassLoader(), new Class[]{Movable.class}, new TimeProxy(tank));
-        movable.move();
+        Tank t = new Tank();
+        Movable m = (Movable) Proxy.newProxyInstance(Tank.class.getClassLoader(), new Class[]{Movable.class}, new TimeProxy(t));
+        m.move();
     }
 
 }
 
-class TimeProxy implements InvocationHandler{
-    Movable m;
+class TimeProxy implements InvocationHandler {
+    Movable movable;
 
-    public TimeProxy(Movable m) {
-        this.m = m;
+    public TimeProxy(Movable movable) {
+        this.movable = movable;
     }
 
-    public void before(){
+    public void before() {
         System.out.println("开始...");
     }
 
-    public void after(){
+    public void after() {
         System.out.println("结束...");
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         before();
-        Object o = method.invoke(m, args);
+        Object o = method.invoke(movable, args);
         after();
         return o;
     }

@@ -1,4 +1,4 @@
-package com.lx.proxy.v05;
+package com.lx.proxy.v06;
 
 import java.util.Random;
 
@@ -8,6 +8,8 @@ import java.util.Random;
  * 问题2：如果无法改变方法源码呢？
  * 用继承？
  * v05:使用代理
+ * v06:代理有各种类型
+ * 问题：如何实现代理的各种组合？继承？Decorator?
  */
 public class Tank implements Movable {
     @Override
@@ -25,8 +27,9 @@ public class Tank implements Movable {
     }
 }
 
-class TankTimeProxy implements Movable{
+class TankTimeProxy implements Movable {
     Tank tank;
+
     public TankTimeProxy(Tank tank) {
         this.tank = tank;
     }
@@ -40,6 +43,22 @@ class TankTimeProxy implements Movable{
 
     }
 }
+
+class TankLongProxy implements Movable {
+    Tank tank;
+
+    public TankLongProxy(Tank tank) {
+        this.tank = tank;
+    }
+
+    @Override
+    public void move() {
+        System.out.println("开始.....");
+        tank.move();
+        System.out.println("结束.....");
+    }
+}
+
 interface Movable {
     void move();
 }
