@@ -26,28 +26,26 @@ class Response {
 }
 
 interface Filter {
-    boolean doFilter(Request request, Response response, ChainFilter chainFilter);
+    void doFilter(Request request, Response response, ChainFilter chainFilter);
 }
 
 class HTMLFilter implements Filter {
 
     @Override
-    public boolean doFilter(Request request, Response response, ChainFilter chainFilter) {
+    public void doFilter(Request request, Response response, ChainFilter chainFilter) {
         request.str = request.str.replaceAll("<", "[").replaceAll(">", "]") + "-----HTMLFilter()";
         chainFilter.doFilter(request, response);
         response.str += "--HTMLFilter()";
-        return true;
     }
 }
 
 class SensitiveFilter implements Filter {
 
     @Override
-    public boolean doFilter(Request request, Response response, ChainFilter chainFilter) {
+    public void doFilter(Request request, Response response, ChainFilter chainFilter) {
         request.str = request.str.replaceAll("996", "995") + "-----SensitiveFilter()";
         chainFilter.doFilter(request, response);
         response.str += "--SensitiveFilter()";
-        return true;
     }
 }
 
@@ -61,13 +59,13 @@ class ChainFilter{
         return this;
     }
 
-    public boolean doFilter(Request request, Response response) {
+    public void doFilter(Request request, Response response) {
         if(index == filters.size()){
-            return false;
+            return;
         }
         Filter f = filters.get(index);
         index++;
 
-        return f.doFilter(request, response, this);
+        f.doFilter(request, response, this);
     }
 }
